@@ -10,8 +10,8 @@ export const songs: Song[] = [
       "Neon Genesis Evangelion",
       "Dragon Ball Z",
       "Sailor Moon",
-      "Gundam Wing"
-    ]
+      "Gundam Wing",
+    ],
   },
   {
     id: 2,
@@ -22,8 +22,8 @@ export const songs: Song[] = [
       "Cowboy Bebop",
       "Space Dandy",
       "Trigun",
-      "Outlaw Star"
-    ]
+      "Outlaw Star",
+    ],
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const songs: Song[] = [
       "Demon Slayer",
       "Jujutsu Kaisen",
       "My Hero Academia",
-      "Black Clover"
-    ]
-  }
+      "Black Clover",
+    ],
+  },
 ];

@@ -9,12 +9,11 @@ import { songs } from "./data.ts";
 import type { GameState } from "./types.ts";
 
 if (import.meta.main) {
-  
   const gameStates = new Map<string, GameState>();
 
   const router = new Router()
     .get("/", (_request) => {
-      return renderPage(<LandingPage _onStartGame={() => {}} />);
+      return renderPage(<LandingPage />);
     })
     .get("/game", async (ctx: RtContext<unknown>) => {
       const url = new URL(ctx.request.url);
@@ -23,14 +22,19 @@ if (import.meta.main) {
       const showModal = url.searchParams.get("showModal") === "true";
       const lastAnswer = url.searchParams.get("lastAnswer");
 
-      console.log("Request:", { url: url.toString(), sessionId, answer, showModal });
+      console.log("Request:", {
+        url: url.toString(),
+        sessionId,
+        answer,
+        showModal,
+      });
 
       // Initialize or get game state
       const gameState = gameStates.get(sessionId) || {
         currentSongIndex: 0,
         score: 0,
         isGameOver: false,
-        lastCorrectAnswer: null as string | null
+        lastCorrectAnswer: null as string | null,
       };
 
       console.log("Current game state:", gameState);
@@ -38,17 +42,17 @@ if (import.meta.main) {
       // Handle answer if provided
       if (answer) {
         const currentSong = songs[gameState.currentSongIndex];
-        console.log("Checking answer:", { 
-          answer, 
+        console.log("Checking answer:", {
+          answer,
           correctAnswer: currentSong.anime,
-          currentSongIndex: gameState.currentSongIndex 
+          currentSongIndex: gameState.currentSongIndex,
         });
 
         if (answer === currentSong.anime) {
           console.log("Correct answer! Adding 100 points");
           gameState.score += 100;
           gameState.currentSongIndex++;
-          
+
           if (gameState.currentSongIndex >= songs.length) {
             console.log("Game over! Final score:", gameState.score);
             gameState.isGameOver = true;
@@ -61,14 +65,19 @@ if (import.meta.main) {
           return new Response(null, {
             status: 302,
             headers: {
-              "Location": `/game?session=${sessionId}&showModal=true&lastAnswer=${encodeURIComponent(answer)}&songIndex=${gameState.currentSongIndex}`
-            }
+              "Location":
+                `/game?session=${sessionId}&showModal=true&lastAnswer=${
+                  encodeURIComponent(answer)
+                }&songIndex=${gameState.currentSongIndex}`,
+            },
           });
         }
       }
 
       // Get the song index from URL if showing modal
-      const songIndex = showModal ? parseInt(url.searchParams.get("songIndex") || "0") : gameState.currentSongIndex;
+      const songIndex = showModal
+        ? parseInt(url.searchParams.get("songIndex") || "0")
+        : gameState.currentSongIndex;
       const currentSong = songs[songIndex];
 
       // After showing modal, advance to next song
@@ -88,30 +97,31 @@ if (import.meta.main) {
       // Render appropriate view
       if (gameState.isGameOver) {
         return renderPage(
-          <ScoreView score={gameState.score} totalSongs={songs.length} />
+          <ScoreView score={gameState.score} totalSongs={songs.length} />,
         );
       }
 
       let content = (
-        <GameView 
-          currentSong={showModal ? currentSong : songs[gameState.currentSongIndex]}
+        <GameView
+          currentSong={showModal
+            ? currentSong
+            : songs[gameState.currentSongIndex]}
           score={gameState.score}
-          _onAnswer={(choice: string) => {
-            if (choice === currentSong.anime) {
-              gameState.score += 100;
-            }
-          }}
         />
       );
 
       // Add modal if showing wrong answer
-      console.log("Checking modal display:", { showModal, lastAnswer, songIndex });
+      console.log("Checking modal display:", {
+        showModal,
+        lastAnswer,
+        songIndex,
+      });
       if (showModal && lastAnswer) {
         console.log("Showing modal for wrong answer");
         content = (
           <DIV>
             {content}
-            <Modal 
+            <Modal
               message={`Sorry, "${lastAnswer}" is incorrect!`}
               correctAnswer={currentSong.anime}
             />
@@ -149,7 +159,9 @@ if (import.meta.main) {
               console.log('_onAnswer function is ready');
 
               // Auto-advance after showing modal
-              ${showModal ? `
+              ${
+        showModal
+          ? `
                 const DISPLAY_TIME = 2000; // Show for 2 seconds
                 const FADE_TIME = 300; // Fade out for 0.3 seconds
                 
@@ -169,7 +181,9 @@ if (import.meta.main) {
                     window.location.href = '/game?session=${sessionId}';
                   }, FADE_TIME);
                 }, DISPLAY_TIME);
-              ` : ''}
+              `
+          : ""
+      }
             } catch(e) {
               console.error('Error setting up _onAnswer:', e);
             }
@@ -180,10 +194,12 @@ if (import.meta.main) {
       // Insert script before closing body tag
       const html = await page.text();
       console.log("Injecting script into HTML");
-      const index = html.lastIndexOf('</body>');
+      const index = html.lastIndexOf("</body>");
       const newHtml = html.slice(0, index) + script + html.slice(index);
 
-      return new Response(newHtml, { headers: { "Content-Type": "text/html" } });
+      return new Response(newHtml, {
+        headers: { "Content-Type": "text/html" },
+      });
     });
 
   Deno.serve((request) => router.fetch(request));
@@ -192,11 +208,13 @@ if (import.meta.main) {
 function renderPage(content: string): Response {
   return new Response(
     <Layout>{content}</Layout>,
-    { headers: { "Content-Type": "text/html" } }
+    { headers: { "Content-Type": "text/html" } },
   );
 }
 
-function ScoreView({ score, totalSongs }: { score: number; totalSongs: number }) {
+function ScoreView(
+  { score, totalSongs }: { score: number; totalSongs: number },
+) {
   const styles = `
     .score-container {
       max-width: 800px;
@@ -239,9 +257,11 @@ function ScoreView({ score, totalSongs }: { score: number; totalSongs: number })
 
   const percentage = (score / (totalSongs * 100)) * 100;
   let message = "Keep practicing!";
-  if (percentage === 100) message = "Perfect score! You're an anime music master! 🎵";
-  else if (percentage >= 80) message = "Great job! You really know your anime music! 🎮";
-  else if (percentage >= 60) message = "Not bad! You're getting there! 🎯";
+  if (percentage === 100) {
+    message = "Perfect score! You're an anime music master! 🎵";
+  } else if (percentage >= 80) {
+    message = "Great job! You really know your anime music! 🎮";
+  } else if (percentage >= 60) message = "Not bad! You're getting there! 🎯";
 
   return `
     <style>${styles}</style>

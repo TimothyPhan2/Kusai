@@ -1,13 +1,12 @@
-import { DIV, H1, H2, UL, LI, P, SPAN, AUDIO, STYLE, A } from "@fartlabs/htx";
+import { A, AUDIO, DIV, H1, H2, LI, P, SPAN, STYLE, UL } from "@fartlabs/htx";
 import type { Song } from "../types.ts";
 
 export interface GameViewProps {
   currentSong: Song;
   score: number;
-  _onAnswer: (choice: string) => void;
 }
 
-export function GameView({ currentSong, score, _onAnswer }: GameViewProps) {
+export function GameView({ currentSong, score }: GameViewProps) {
   const styles = `
     .container {
       max-width: 800px;
@@ -97,18 +96,20 @@ export function GameView({ currentSong, score, _onAnswer }: GameViewProps) {
       <STYLE>{styles}</STYLE>
       <DIV class="container">
         <H1>🎵 Anime Song Quiz</H1>
-        
+
         <DIV class="controls">
           <AUDIO controls="controls" src={currentSong.url}></AUDIO>
         </DIV>
 
         <H2>Which anime is this song from?</H2>
-        
+
         <UL class="choices">
           {currentSong.choices.map((choice) => (
-            <LI 
-              class="choice" 
-              onclick={`try { globalThis._onAnswer('${choice.replace(/'/g, "\\'")}'); } catch(e) { console.error('Error in onclick:', e); }`}
+            <LI
+              class="choice"
+              onclick={`try { globalThis._onAnswer('${
+                choice.replace(/'/g, "\\'")
+              }'); } catch(e) { console.error('Error in onclick:', e); }`}
             >
               {choice}
             </LI>

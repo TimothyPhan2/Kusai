@@ -1,10 +1,6 @@
 import { DIV, H1, P, STYLE } from "@fartlabs/htx";
 
-export interface LandingPageProps {
-  _onStartGame: () => void;
-}
-
-export function LandingPage({ _onStartGame }: LandingPageProps) {
+export function LandingPage() {
   const styles = `
     .landing {
       max-width: 800px;
@@ -63,8 +59,10 @@ export function LandingPage({ _onStartGame }: LandingPageProps) {
         <H1 class="title">🎵 Kusai</H1>
         <P class="subtitle">Test your anime music knowledge!</P>
         <P>Guess the anime from its iconic opening and ending themes.</P>
-        <P class="coming-soon">💨 Coming Soon: Anime songs recreated with fart sounds! 💨</P>
-        <DIV 
+        <P class="coming-soon">
+          💨 Coming Soon: Anime songs recreated with fart sounds! 💨
+        </P>
+        <DIV
           class="start-button"
           onclick={`window.location.href='/game'`}
         >

@@ -1,6 +1,7 @@
 # 🎵 Kusai
 
-An interactive web game where players test their knowledge of anime music. Listen to iconic anime songs and guess which series they're from! 
+An interactive web game where players test their knowledge of anime music.
+Listen to iconic anime songs and guess which series they're from!
 
 > Built during the FartLabs Hackathon 2025.
 
@@ -15,7 +16,7 @@ An interactive web game where players test their knowledge of anime music. Liste
 ## Tech Stack
 
 - **Runtime**: [Deno](https://deno.land/)
-- **Framework**: [HTX](https://jsr.io/@fartlabs/htx) 
+- **Framework**: [HTX](https://jsr.io/@fartlabs/htx)
 - **Routing**: [@fartlabs/rt](https://jsr.io/@fartlabs/rt)
 - **Styling**: [Fart.css](https://css.fart.tools)
 
@@ -28,7 +29,6 @@ An interactive web game where players test their knowledge of anime music. Liste
    deno task dev
    ```
 4. Open [http://localhost:8000](http://localhost:8000) in your browser
-
 
 ## Game Flow
 

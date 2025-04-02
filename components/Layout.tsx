@@ -1,6 +1,4 @@
-import {
-  BODY, HEAD, HTML, META, TITLE, LINK, SCRIPT
-} from "@fartlabs/htx";
+import { BODY, HEAD, HTML, LINK, META, SCRIPT, TITLE } from "@fartlabs/htx";
 
 export interface LayoutProps {
   children?: string[];
@@ -12,14 +10,14 @@ export function Layout({ children }: LayoutProps) {
       <HEAD>
         <META charset="UTF-8" />
         <TITLE>Anime Song Quiz</TITLE>
-        <META 
-          name="description" 
+        <META
+          name="description"
           content="Test your anime music knowledge!"
         />
-        <LINK 
-          rel="stylesheet" 
-          type="text/css" 
-          href="https://css.fart.tools" 
+        <LINK
+          rel="stylesheet"
+          type="text/css"
+          href="https://css.fart.tools"
         />
         <SCRIPT>
           {`
