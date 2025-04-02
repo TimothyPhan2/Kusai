@@ -22,12 +22,12 @@ if (import.meta.main) {
       const showModal = url.searchParams.get("showModal") === "true";
       const lastAnswer = url.searchParams.get("lastAnswer");
 
-      console.log("Request:", {
-        url: url.toString(),
-        sessionId,
-        answer,
-        showModal,
-      });
+      // console.log("Request:", {
+      //   url: url.toString(),
+      //   sessionId,
+      //   answer,
+      //   showModal,
+      // });
 
       // Initialize or get game state
       const gameState = gameStates.get(sessionId) || {
@@ -37,29 +37,29 @@ if (import.meta.main) {
         lastCorrectAnswer: null as string | null,
       };
 
-      console.log("Current game state:", gameState);
+      // console.log("Current game state:", gameState);
 
       // Handle answer if provided
       if (answer) {
         const currentSong = songs[gameState.currentSongIndex];
-        console.log("Checking answer:", {
-          answer,
-          correctAnswer: currentSong.anime,
-          currentSongIndex: gameState.currentSongIndex,
-        });
+        // console.log("Checking answer:", {
+        //   answer,
+        //   correctAnswer: currentSong.anime,
+        //   currentSongIndex: gameState.currentSongIndex,
+        // });
 
         if (answer === currentSong.anime) {
-          console.log("Correct answer! Adding 100 points");
+          // console.log("Correct answer! Adding 100 points");
           gameState.score += 100;
           gameState.currentSongIndex++;
 
           if (gameState.currentSongIndex >= songs.length) {
-            console.log("Game over! Final score:", gameState.score);
+            // console.log("Game over! Final score:", gameState.score);
             gameState.isGameOver = true;
           }
         } else {
           // Wrong answer - show modal first
-          console.log("Wrong answer! Setting up modal display");
+          // console.log("Wrong answer! Setting up modal display");
           gameState.lastCorrectAnswer = currentSong.anime;
           gameStates.set(sessionId, gameState);
           return new Response(null, {
@@ -82,17 +82,17 @@ if (import.meta.main) {
 
       // After showing modal, advance to next song
       if (showModal) {
-        console.log("Modal was shown, will advance to next song");
+        // console.log("Modal was shown, will advance to next song");
         gameState.currentSongIndex = songIndex + 1;
         if (gameState.currentSongIndex >= songs.length) {
-          console.log("Game over! Final score:", gameState.score);
+          // console.log("Game over! Final score:", gameState.score);
           gameState.isGameOver = true;
         }
       }
 
       // Save game state
       gameStates.set(sessionId, gameState);
-      console.log("Updated game state:", gameState);
+      // console.log("Updated game state:", gameState);
 
       // Render appropriate view
       if (gameState.isGameOver) {
@@ -111,13 +111,9 @@ if (import.meta.main) {
       );
 
       // Add modal if showing wrong answer
-      console.log("Checking modal display:", {
-        showModal,
-        lastAnswer,
-        songIndex,
-      });
+      // console.log("Checking modal display:", { showModal, lastAnswer, songIndex });
       if (showModal && lastAnswer) {
-        console.log("Showing modal for wrong answer");
+        // console.log("Showing modal for wrong answer");
         content = (
           <DIV>
             {content}
@@ -135,28 +131,28 @@ if (import.meta.main) {
       const script = `
         <script>
           (function() {
-            console.log('Setting up _onAnswer function');
+            // console.log('Setting up _onAnswer function');
             try {
               globalThis._onAnswer = function(choice) {
-                console.log('Choice clicked:', choice);
+                // console.log('Choice clicked:', choice);
                 const currentSong = ${JSON.stringify(currentSong)};
-                console.log('Current song:', currentSong);
+                // console.log('Current song:', currentSong);
                 if (choice === currentSong.anime) {
-                  console.log('Correct answer! Updating state...');
+                  // console.log('Correct answer! Updating state...');
                   fetch('/game?session=${sessionId}&answer=' + encodeURIComponent(choice))
                     .then(() => {
-                      console.log('State updated, redirecting...');
+                      // console.log('State updated, redirecting...');
                       window.location.href = '/game?session=${sessionId}';
                     })
                     .catch(error => {
-                      console.error('Error updating state:', error);
+                      // console.error('Error updating state:', error);
                     });
                 } else {
-                  console.log('Wrong answer! Showing modal...');
+                  // console.log('Wrong answer! Showing modal...');
                   window.location.href = '/game?session=${sessionId}&showModal=true&lastAnswer=' + encodeURIComponent(choice) + '&songIndex=${songIndex}';
                 }
               };
-              console.log('_onAnswer function is ready');
+              // console.log('_onAnswer function is ready');
 
               // Auto-advance after showing modal
               ${
@@ -169,15 +165,15 @@ if (import.meta.main) {
                   // Start fade out animation
                   const modal = document.querySelector('.modal-overlay');
                   if (modal) {
-                    console.log('Starting modal fade out');
+                    // console.log('Starting modal fade out');
                     modal.classList.add('fade-out');
                   } else {
-                    console.error('Modal element not found');
+                    // console.error('Modal element not found');
                   }
                   
                   // Wait for fade out, then advance to next song
                   setTimeout(() => {
-                    console.log('Moving to next song...');
+                    // console.log('Moving to next song...');
                     window.location.href = '/game?session=${sessionId}';
                   }, FADE_TIME);
                 }, DISPLAY_TIME);
@@ -185,7 +181,7 @@ if (import.meta.main) {
           : ""
       }
             } catch(e) {
-              console.error('Error setting up _onAnswer:', e);
+              // console.error('Error setting up _onAnswer:', e);
             }
           })();
         </script>
@@ -193,7 +189,7 @@ if (import.meta.main) {
 
       // Insert script before closing body tag
       const html = await page.text();
-      console.log("Injecting script into HTML");
+      // console.log("Injecting script into HTML");
       const index = html.lastIndexOf("</body>");
       const newHtml = html.slice(0, index) + script + html.slice(index);
 
