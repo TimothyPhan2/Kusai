@@ -1,0 +1,61 @@
+{
+  "version": "4",
+  "specifiers": {
+    "jsr:@cross/deepmerge@1": "1.0.0",
+    "jsr:@fartlabs/ht@^0.0.9": "0.0.9",
+    "jsr:@fartlabs/htx@^0.0.9": "0.0.9",
+    "jsr:@fartlabs/jsonx@^0.0.11": "0.0.11",
+    "jsr:@fartlabs/rt@*": "0.0.7",
+    "jsr:@fartlabs/rt@^0.0.7": "0.0.7",
+    "jsr:@std/assert@1": "1.0.12",
+    "jsr:@std/http@^1.0.13": "1.0.13",
+    "jsr:@std/internal@^1.0.6": "1.0.6"
+  },
+  "jsr": {
+    "@cross/deepmerge@1.0.0": {
+      "integrity": "1e1318a74e31ba1959b9aa0acae8bd417b806f74ffd25ac07c90e12f83ad6b1d"
+    },
+    "@fartlabs/ht@0.0.9": {
+      "integrity": "6975bc6449ede95c626bb2052499840dddb7e580697ff4e50d32e32682ff8311"
+    },
+    "@fartlabs/htx@0.0.9": {
+      "integrity": "28499ebdd94b695e2cded97eeedb0acd8e1e55a76605eb7f2b962826fa836e60",
+      "dependencies": [
+        "jsr:@fartlabs/ht",
+        "jsr:@fartlabs/htx",
+        "jsr:@fartlabs/jsonx"
+      ]
+    },
+    "@fartlabs/jsonx@0.0.11": {
+      "integrity": "25e70bc64e680c90f0b91d2e639a04d3e8a7811809282a4b82a27e2862218438",
+      "dependencies": [
+        "jsr:@cross/deepmerge"
+      ]
+    },
+    "@fartlabs/rt@0.0.7": {
+      "integrity": "b7e701e93a99487f993c841ad497f69b67772db74fda5bfff55d50970b0124a9",
+      "dependencies": [
+        "jsr:@std/http"
+      ]
+    },
+    "@std/assert@1.0.12": {
+      "integrity": "08009f0926dda9cbd8bef3a35d3b6a4b964b0ab5c3e140a4e0351fbf34af5b9a",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/http@1.0.13": {
+      "integrity": "d29618b982f7ae44380111f7e5b43da59b15db64101198bb5f77100d44eb1e1e"
+    },
+    "@std/internal@1.0.6": {
+      "integrity": "9533b128f230f73bd209408bb07a4b12f8d4255ab2a4d22a1fd6d87304aca9a4"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@fartlabs/htx@^0.0.9",
+      "jsr:@fartlabs/rt@^0.0.7",
+      "jsr:@std/assert@1"
+    ]
+  }
+}

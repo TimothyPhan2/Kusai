@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "dev": "deno run --watch main.tsx"
+  },
+  "imports": {
+    "@fartlabs/htx": "jsr:@fartlabs/htx@^0.0.9",
+    "@fartlabs/rt": "jsr:@fartlabs/rt@^0.0.7",
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@fartlabs/htx"
+  }
+}
