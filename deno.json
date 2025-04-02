@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.tsx"
+    "dev": "deno run -A --watch main.tsx"
   },
   "imports": {
     "@fartlabs/htx": "jsr:@fartlabs/htx@^0.0.9",
