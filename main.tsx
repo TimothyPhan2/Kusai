@@ -78,52 +78,75 @@ if (import.meta.main) {
       const songIndex = showModal
         ? parseInt(url.searchParams.get("songIndex") || "0")
         : gameState.currentSongIndex;
-      const currentSong = songs[songIndex];
+      const currentSong = songIndex < songs.length ? songs[songIndex] : null;
 
-      // After showing modal, advance to next song
-      if (showModal) {
-        // console.log("Modal was shown, will advance to next song");
-        gameState.currentSongIndex = songIndex + 1;
-        if (gameState.currentSongIndex >= songs.length) {
-          // console.log("Game over! Final score:", gameState.score);
-          gameState.isGameOver = true;
-        }
+      // Redirect to game over if we're past the last song
+      if (!currentSong && !showModal && !url.searchParams.get("showGameOver")) {
+        gameState.isGameOver = true;
+        gameStates.set(sessionId, gameState);
+        return new Response(null, {
+          status: 302,
+          headers: {
+            "Location": `/game?session=${sessionId}&showGameOver=true`,
+          },
+        });
       }
 
-      // Save game state
-      gameStates.set(sessionId, gameState);
-      // console.log("Updated game state:", gameState);
+      // Show modal for wrong answer first
+      if (showModal && lastAnswer && currentSong) {
+        // Check if this was the last song
+        const isLastSong = songIndex + 1 >= songs.length;
 
-      // Render appropriate view
-      if (gameState.isGameOver) {
+        // Update game state for next navigation
+        gameState.currentSongIndex = songIndex + 1;
+        gameState.isGameOver = isLastSong;
+        gameStates.set(sessionId, gameState);
+
+        // Show modal with appropriate next action
+        const nextAction = isLastSong
+          ? `/game?session=${sessionId}&showGameOver=true`
+          : `/game?session=${sessionId}`;
+        const content = (
+          <DIV>
+            <GameView currentSong={currentSong} score={gameState.score} />
+            <Modal
+              message={`Sorry, "${lastAnswer}" is incorrect!`}
+              correctAnswer={currentSong.anime}
+              nextUrl={nextAction}
+              imageUrl={currentSong.imageUrl}
+            />
+          </DIV>
+        );
+        return renderPage(content);
+      }
+
+      // Handle game over after modal is closed
+      if (url.searchParams.get("showGameOver") === "true") {
         return renderPage(
           <ScoreView score={gameState.score} totalSongs={songs.length} />,
         );
       }
 
-      let content = (
+      // Save game state
+      gameStates.set(sessionId, gameState);
+
+      // Ensure we have a valid song
+      if (!currentSong) {
+        return new Response(null, {
+          status: 302,
+          headers: {
+            "Location": `/game?session=${sessionId}&showGameOver=true`,
+          },
+        });
+      }
+
+      // Render normal game view
+      const content = (
         <GameView
-          currentSong={showModal
-            ? currentSong
-            : songs[gameState.currentSongIndex]}
+          currentSong={currentSong}
           score={gameState.score}
         />
       );
-
-      // Add modal if showing wrong answer
-      // console.log("Checking modal display:", { showModal, lastAnswer, songIndex });
-      if (showModal && lastAnswer) {
-        // console.log("Showing modal for wrong answer");
-        content = (
-          <DIV>
-            {content}
-            <Modal
-              message={`Sorry, "${lastAnswer}" is incorrect!`}
-              correctAnswer={currentSong.anime}
-            />
-          </DIV>
-        );
-      }
 
       const page = renderPage(content);
 
@@ -241,10 +264,6 @@ function ScoreView(
       text-decoration: none;
       transition: all 0.2s;
     }
-    .play-again:hover {
-      background: var(--fart-secondary);
-      transform: scale(1.05);
-    }
     @keyframes scoreIn {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -252,12 +271,15 @@ function ScoreView(
   `;
 
   const percentage = (score / (totalSongs * 100)) * 100;
-  let message = "Keep practicing!";
+  let message = "Pfft... you ain't gassy enough! 💨";
   if (percentage === 100) {
-    message = "Perfect score! You're an anime music master! 🎵";
+    message =
+      "Holy fart! A perfect score! Didn't know you were farty like that! 😏💫";
   } else if (percentage >= 80) {
-    message = "Great job! You really know your anime music! 🎮";
-  } else if (percentage >= 60) message = "Not bad! You're getting there! 🎯";
+    message = "You're really ripping through these! What a blast! 💨";
+  } else if (percentage >= 60) {
+    message = "Not too shabby! You've got some potential toots! 💨";
+  }
 
   return `
     <style>${styles}</style>

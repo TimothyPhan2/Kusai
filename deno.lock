@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@cross/deepmerge@1": "1.0.0",
     "jsr:@fartlabs/ht@^0.0.9": "0.0.9",
+    "jsr:@fartlabs/htx@*": "0.0.9",
     "jsr:@fartlabs/htx@^0.0.9": "0.0.9",
     "jsr:@fartlabs/jsonx@^0.0.11": "0.0.11",
     "jsr:@fartlabs/rt@*": "0.0.7",
@@ -22,7 +23,7 @@
       "integrity": "28499ebdd94b695e2cded97eeedb0acd8e1e55a76605eb7f2b962826fa836e60",
       "dependencies": [
         "jsr:@fartlabs/ht",
-        "jsr:@fartlabs/htx",
+        "jsr:@fartlabs/htx@^0.0.9",
         "jsr:@fartlabs/jsonx"
       ]
     },

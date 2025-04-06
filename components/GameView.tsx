@@ -1,4 +1,16 @@
-import { A, AUDIO, DIV, H1, H2, LI, P, SPAN, STYLE, UL } from "@fartlabs/htx";
+import {
+  A,
+  AUDIO,
+  DIV,
+  H1,
+  H2,
+  LI,
+  P,
+  SCRIPT,
+  SPAN,
+  STYLE,
+  UL,
+} from "@fartlabs/htx";
 import type { Song } from "../types.ts";
 
 export interface GameViewProps {
@@ -48,21 +60,34 @@ export function GameView({ currentSong, score }: GameViewProps) {
       max-width: 600px;
       margin: 2rem auto;
     }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
     .choice {
       background: var(--fart-dark-primary);
       padding: 1rem 2rem;
       border-radius: 0.8rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border: 2px solid transparent;
       font-size: 1.2rem;
+      position: relative;
+      overflow: hidden;
     }
+
     .choice:hover {
-      transform: translateY(-2px);
       background: var(--fart-primary);
       color: var(--fart-darker-dark-primary);
       border-color: var(--fart-secondary);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      animation: bounce 0.5s ease infinite;
+    }
+
+    .choice:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     .score {
       font-size: 1.5rem;
@@ -98,18 +123,51 @@ export function GameView({ currentSong, score }: GameViewProps) {
         <H1>🎵 Anime Song Quiz</H1>
 
         <DIV class="controls">
-          <AUDIO controls="controls" src={currentSong.url}></AUDIO>
+          <AUDIO controls="controls" src={currentSong.url} preload="auto">
+          </AUDIO>
         </DIV>
 
         <H2>Which anime is this song from?</H2>
 
+        <SCRIPT>
+          {`
+          if (!globalThis._playRandomFart) {
+            const fartSounds = [
+              'https://www.myinstants.com/media/sounds/quick-fart.mp3',
+              'https://www.myinstants.com/media/sounds/fart-with-reverb.mp3',
+              'https://www.myinstants.com/media/sounds/fart-short.mp3',
+              'https://www.myinstants.com/media/sounds/wet-fart.mp3',
+              'https://www.myinstants.com/media/sounds/fart_9.mp3'
+            ];
+            const audioPool = fartSounds.map(src => {
+              const audio = new Audio(src);
+              audio.volume = 0.2;
+              return audio;
+            });
+            let lastIndex = -1;
+
+            globalThis._playRandomFart = function() {
+              let index;
+              do {
+                index = Math.floor(Math.random() * audioPool.length);
+              } while (index === lastIndex && audioPool.length > 1);
+              
+              const audio = audioPool[index];
+              audio.currentTime = 0;
+              audio.play();
+              lastIndex = index;
+            };
+          }
+        `}
+        </SCRIPT>
         <UL class="choices">
           {currentSong.choices.map((choice) => (
             <LI
               class="choice"
               onclick={`try { globalThis._onAnswer('${
                 choice.replace(/'/g, "\\'")
-              }'); } catch(e) { console.error('Error in onclick:', e); }`}
+              }')} catch(e) { console.error('Error in onclick:', e); }`}
+              onmouseenter="try { globalThis._playRandomFart(); } catch(e) { console.error('Error playing sound:', e); }"
             >
               {choice}
             </LI>

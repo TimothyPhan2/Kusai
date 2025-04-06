@@ -3,6 +3,7 @@ export interface Song {
   title: string;
   anime: string;
   url: string;
+  imageUrl: string;
   choices: string[];
 }
 
