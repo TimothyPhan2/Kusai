@@ -5,11 +5,29 @@ import { Layout } from "./components/Layout.tsx";
 import { LandingPage } from "./components/LandingPage.tsx";
 import { GameView } from "./components/GameView.tsx";
 import { Modal } from "./components/Modal.tsx";
-import { songs } from "./data.ts";
+import { songs as originalSongs } from "./data.ts";
+import { shuffle } from "./utils/shuffle.ts";
 import type { GameState } from "./types.ts";
+
+function generateChoices(
+  correctAnswer: string,
+  allSongs: typeof originalSongs,
+): string[] {
+  // Get all unique choices from all songs
+  const allChoices = [...new Set(allSongs.flatMap((song) => song.choices))];
+
+  // Filter out the correct answer and shuffle
+  const otherChoices = shuffle(
+    allChoices.filter((choice) => choice !== correctAnswer),
+  );
+
+  // Take 3 random choices and combine with correct answer
+  return shuffle([correctAnswer, ...otherChoices.slice(0, 3)]);
+}
 
 if (import.meta.main) {
   const gameStates = new Map<string, GameState>();
+  const sessionSongs = new Map<string, typeof originalSongs>();
 
   const router = new Router()
     .get("/", (_request) => {
@@ -30,6 +48,12 @@ if (import.meta.main) {
       // });
 
       // Initialize or get game state
+      // Initialize shuffled songs for this session if they don't exist
+      if (!sessionSongs.has(sessionId)) {
+        sessionSongs.set(sessionId, shuffle([...originalSongs]));
+      }
+      const songs = sessionSongs.get(sessionId)!;
+
       const gameState = gameStates.get(sessionId) || {
         currentSongIndex: 0,
         score: 0,
@@ -78,7 +102,12 @@ if (import.meta.main) {
       const songIndex = showModal
         ? parseInt(url.searchParams.get("songIndex") || "0")
         : gameState.currentSongIndex;
-      const currentSong = songIndex < songs.length ? songs[songIndex] : null;
+      const currentSong = songIndex < songs.length
+        ? {
+          ...songs[songIndex],
+          choices: generateChoices(songs[songIndex].anime, songs),
+        }
+        : null;
 
       // Redirect to game over if we're past the last song
       if (!currentSong && !showModal && !url.searchParams.get("showGameOver")) {

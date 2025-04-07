@@ -24,12 +24,7 @@ export const songs: Song[] = [
       "https://www.dropbox.com/scl/fi/kzngiq407ccdue32m0ams/gintama_-_opening_13__sakuramitsutsuki.mp3?rlkey=b6dlwg80dhmzuuzrrsrjcqnpm&st=2e3zef1y&dl=1",
     imageUrl:
       "https://m.media-amazon.com/images/M/MV5BNTMzNjE0N2ItNjFiYi00NmIzLTk1MzMtZWFjNThjMzI5MTJlXkEyXkFqcGc@._V1_.jpg",
-    choices: [
-      "Gintama",
-      "Naruto",
-      "The Rising of the Shield Hero",
-      "Toriko",
-    ],
+    choices: ["Gintama", "Naruto", "The Rising of the Shield Hero", "Toriko"],
   },
   {
     id: 3,
@@ -75,5 +70,60 @@ export const songs: Song[] = [
       "More Than a Married Couple, But Not Lovers",
       "Grand Blue",
     ],
+  },
+  {
+    id: 6,
+    title: "Bow and Arrow",
+    anime: "Medalist",
+    url:
+      "https://www.dropbox.com/scl/fi/7u9fh584c3wc6fq4t75p3/tvbow_and_arrow.mp3?rlkey=2asmo0vbvendqm4l1u5taazo0&st=1v5ox0w5&dl=1",
+    imageUrl:
+      "https://m.media-amazon.com/images/M/MV5BYWMyYjE1ZWYtMTRhZC00MDFkLWFkOTEtMGZkNzc0MmVkMjQ2XkEyXkFqcGc@._V1_.jpg",
+    choices: ["Medalist", "Soul Eater", "Promare", "Blue Exorcist"],
+  },
+  {
+    id: 7,
+    title: "Veil",
+    anime: "Fire Force",
+    url:
+      "https://www.dropbox.com/scl/fi/82omqq2ai7e125nei1vvv/fire_force_ending_1__veil_by_keina_suda.mp3?rlkey=akgz8uf28m05adglr0gris707&st=8qm8mtnt&dl=1",
+    imageUrl:
+      "https://m.media-amazon.com/images/M/MV5BYjcxOWYyZDEtOTRlMy00MmQzLWEzMDgtYjgxYTliMWM5MjgxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    choices: ["Fire Force", "Dororo", "Mushoku Tensei", "Inuyasha"],
+  },
+  {
+    id: 8,
+    title: "Hibana",
+    anime: "Golden Kamuy",
+    url:
+      "https://www.dropbox.com/scl/fi/xrn2m3i449nit8ulwi2hw/golden_kamuy__ending_theme__hibana.mp3?rlkey=mcyxfymlnflwk7nvrqxco5v5v&st=e3ig83z9&dl=1",
+    imageUrl:
+      "https://m.media-amazon.com/images/M/MV5BYTliMTU1OTEtOTE0Yi00YmUxLWFiN2YtYzBlNzdkNjg2MmY3XkEyXkFqcGc@._V1_.jpg",
+    choices: [
+      "One Punch Man",
+      "Mob Psycho 100",
+      "My Hero Academia",
+      "Golden Kamuy",
+    ],
+  },
+  {
+    id: 9,
+    title: "It's the Right Time",
+    anime: "Parasyte",
+    url:
+      "https://www.dropbox.com/scl/fi/qfrl592w6lbtbtrjrigl9/parasyte_-the_maxim-_ending__its_the_right_time.mp3?rlkey=8n5e58m8tpxrh6xo9ccrotef0&st=dw2rnjhu&dl=1",
+    imageUrl:
+      "https://m.media-amazon.com/images/M/MV5BMzg2YjA0NGYtYjQwMS00MDQyLWFlNWMtODVhNTBkYWIyNjE1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    choices: ["Beastars", "Parasyte", "Death Note", "Ajin"],
+  },
+  {
+    id: 10,
+    title: "Colors",
+    anime: "Code Geass",
+    url:
+      "https://www.dropbox.com/scl/fi/8prsx2zjk9l9ktcrrzfgf/code_geass_opening__colors_by_flow.mp3?rlkey=z4hvsh175wl2m42k4oqbibik1&st=8urkvwog&dl=1",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Code_Geass_R1_box_set_cover.jpg/250px-Code_Geass_R1_box_set_cover.jpg",
+    choices: ["Neon Genesis Evangelion", "FLCL", "Gundam", "Code Geass"],
   },
 ];
